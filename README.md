@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Flight Planner Prototype
 
-## Getting Started
+Stateless natural-language flight itinerary assistant built with Next.js, TypeScript, a shadcn-style component layer, the OpenAI API, and an Amadeus flight-search adapter.
 
-First, run the development server:
+## Local development
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Review `.env.local` and replace the stub values when you have real keys.
+
+3. Start the app:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deploy to Vercel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Use the deploy script from the repo root:
 
-## Learn More
+```bash
+npm run deploy:vercel
+```
 
-To learn more about Next.js, take a look at the following resources:
+For a production deploy:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run deploy:vercel -- --prod
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The script runs `lint` and `build` first, then calls the Vercel CLI. You still need to add these environment variables in the Vercel project settings:
 
-## Deploy on Vercel
+- `OPENAI_API_KEY`
+- `OPENAI_MODEL`
+- `AMADEUS_API_KEY`
+- `AMADEUS_API_SECRET`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## How it works
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- The browser stores the live chat state and the current `TravelPlan`.
+- Reloading the page clears everything.
+- `POST /api/turn` decides whether to ask a clarification question or search flights.
+- If API keys are missing, the app falls back to deterministic mock flight results so the interface still works.
+
+## Environment variables
+
+See `.env.example` for the required keys:
+
+- `OPENAI_API_KEY`
+- `OPENAI_MODEL`
+- `AMADEUS_API_KEY`
+- `AMADEUS_API_SECRET`
